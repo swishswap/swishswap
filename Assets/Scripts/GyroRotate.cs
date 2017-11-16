@@ -10,5 +10,7 @@
      void Update () 
      {
          transform.Rotate (Input.gyro.rotationRateUnbiased.x, Input.gyro.rotationRateUnbiased.y, Input.gyro.rotationRateUnbiased.z);
+         //Om koden ovan inte funkar, testa koden nedan:
+         //transform.eulerAngles = new Vector3 (Input.gyro.rotationRateUnbiased.x, Input.gyro.rotationRateUnbiased.y, Input.gyro.rotationRateUnbiased.z);
      }
  }
