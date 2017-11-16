@@ -1,4 +1,5 @@
  using UnityEngine;
+ using UnityEngine.iOS;
  using System.Collections;
  public class GyroRotate : MonoBehaviour {
      
