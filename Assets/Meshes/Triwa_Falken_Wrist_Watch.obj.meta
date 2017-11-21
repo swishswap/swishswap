@@ -659,7 +659,7 @@ ModelImporter:
       name: object_9Mat
     second: {fileID: 2100000, guid: 795477a3e6b764043b05aed478762f91, type: 2}
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
     materialLocation: 0
