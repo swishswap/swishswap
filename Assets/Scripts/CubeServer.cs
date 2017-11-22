@@ -59,6 +59,12 @@ public class CubeServer : MonoBehaviour {
 				Debug.Log ("NEW CLIENT CONNECTED!");
 				clients.Add (connection);
 				break;
+
+			case NetworkEventType.DataEvent:
+				//Debug.Log ("Data recieved: " + buffer [0]);
+				gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(buffer[0], buffer[1], buffer[2])));
+				break;
+
 			case NetworkEventType.DisconnectEvent:
 				Debug.Log ("Client disconnected");
 				clients.Remove (connection);

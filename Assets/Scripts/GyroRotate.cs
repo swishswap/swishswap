@@ -7,9 +7,9 @@ using System.Runtime.InteropServices;
  public class GyroRotate : MonoBehaviour {
 
 	private float alpha, beta, gamma;
-	private float x;
+	private float x; 
 
-	[DllImport("__Internal")]
+	[DllImport("__Internal")]   
 	private static extern void SetupGyroscope();
      
      void Start () 
