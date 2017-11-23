@@ -62,7 +62,10 @@ public class CubeServer : MonoBehaviour {
 
 			case NetworkEventType.DataEvent:
 				//Debug.Log ("Data recieved: " + buffer [0]);
-				gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(buffer[0], buffer[1], buffer[2])));
+				//For a standing phone -beta, -gamma, alpha
+				gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(-buffer[1], -buffer[2], buffer[0])));
+				//For a horizontal phone gamma, -beta, alpha
+				//gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(buffer[2], -buffer[1], buffer[0])));
 				break;
 
 			case NetworkEventType.DisconnectEvent:
