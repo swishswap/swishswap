@@ -16,12 +16,11 @@ public class CanvasController : MonoBehaviour {
 
 	private float limit = 120f;
 
-	// The instantiated highlight graphics.
+	// The highlight graphics.
 	public GameObject highlight;
 
 	// The color of the highlight graphics.
 	private Color32 color;
-
 	private Color32 color_t;
 
 	// The screen space position the line is supposed to poin to.
@@ -41,7 +40,6 @@ public class CanvasController : MonoBehaviour {
 		float angle = Vector3.Angle(interesting.transform.forward, thecamera.transform.forward);
 
 		if(angle > limit) {
-			//Debug.Log("interesting");
 
 			// Get the screen position of the interesting object.
 			Vector3 screenposition = thecamera.WorldToScreenPoint (interesting.transform.position);
