@@ -60,6 +60,7 @@ ModelImporter:
     100104: Rectangle002
     100106: Sphere001
     100108: //RootNode
+    100110: Object003
     400000: Box001
     400002: Box002
     400004: Box003
@@ -115,6 +116,7 @@ ModelImporter:
     400104: Rectangle002
     400106: Sphere001
     400108: //RootNode
+    400110: Object003
     2300000: Box001
     2300002: Box002
     2300004: Box003
@@ -165,6 +167,7 @@ ModelImporter:
     2300094: Plane004
     2300096: Rectangle001
     2300098: Sphere001
+    2300100: Object003
     3300000: Box001
     3300002: Box002
     3300004: Box003
@@ -215,6 +218,7 @@ ModelImporter:
     3300094: Plane004
     3300096: Rectangle001
     3300098: Sphere001
+    3300100: Object003
     4300000: Box009
     4300002: Circle008
     4300004: Cylinder001
@@ -265,6 +269,7 @@ ModelImporter:
     4300094: Circle010
     4300096: Plane004
     4300098: Circle011
+    4300100: Object003
     9500000: //RootNode
   externalObjects:
   - first:
