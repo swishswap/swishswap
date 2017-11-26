@@ -9,14 +9,12 @@ public class SwipeColor : MonoBehaviour
 	Vector2 swipeVector;
 
 	void Start(){
-		Input.gyro.enabled = true;
 		rend = GetComponent<Renderer> ();
 	}
 
 	void Update() 
 	{
 		Swipe ();
-		transform.rotation = Input.gyro.attitude;
 	}
 
 	public void Swipe()
