@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ColorSwitch : MonoBehaviour {
+public class MaterialSwitch : MonoBehaviour {
 
 	//public GameObject obj;
 
