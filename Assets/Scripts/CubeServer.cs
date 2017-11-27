@@ -83,11 +83,6 @@ public class CubeServer : MonoBehaviour {
 				}
 
 
-				float rotX = -beta;
-				float rotY = -alpha;
-				float rotZ = gamma;
-
-
 				bool touching = buffer [6] == 1;
 
 				Debug.Log (alpha + ", " + beta + ", " + gamma + ", touching=" + touching);
@@ -95,11 +90,11 @@ public class CubeServer : MonoBehaviour {
 				Client c = getClient (connection);
 
 				if (touching) {
-					c.calibrate (rotX, rotY, rotZ);
+					c.calibrate (alpha, beta, gamma);
 				}
 
 				//For a standing phone -beta, -gamma, alpha
-				gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), c.correct(rotX, rotY, rotZ));
+				gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), c.correct(alpha, beta, gamma));
 				//For a horizontal phone gamma, -beta, alpha
 				//gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(buffer[2], -buffer[1], buffer[0])));
 				break;
@@ -124,24 +119,31 @@ public class CubeServer : MonoBehaviour {
 		return null;
 	}
 
+	private static Quaternion buildQuaternion(float alpha, float beta, float gamma){
+
+		Quaternion rotAlpha = Quaternion.AngleAxis (-alpha, new Vector3 (0, 1, 0));
+		Quaternion rotBeta = Quaternion.AngleAxis (-beta, new Vector3 (1, 0, 0));
+		Quaternion rotGamma = Quaternion.AngleAxis (-gamma, new Vector3 (0, 0, 1));
+
+		return rotAlpha * rotBeta * rotGamma;
+	}
+
 	private class Client {
 
 		private int connectionID;
-		private float calX, calY, calZ;
+		private Quaternion calibration;
 
 		public Client(int connectionID) {
 			this.connectionID = connectionID;
+			calibration = Quaternion.Euler(0, 0, 0);
 		}
 
 		public void calibrate(float rotX, float rotY, float rotZ){
-			//calibration = Quaternion.Inverse(Quaternion.Euler (rotX, rotY, rotZ));
-			calX = rotX;
-			calY = rotY;
-			calZ = rotZ;
+			calibration = Quaternion.Inverse(buildQuaternion(rotX, rotY, rotZ));
 		}
 
 		public Quaternion correct(float rotX, float rotY, float rotZ){
-			return Quaternion.Euler (rotX - calX, rotY - calY, rotZ - calZ);
+			return calibration * buildQuaternion(rotX, rotY, rotZ);
 		}
 
 		public int getConnectionID(){

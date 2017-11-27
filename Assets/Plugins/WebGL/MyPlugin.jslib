@@ -1,7 +1,7 @@
 mergeInto(LibraryManager.library, {
 
 	SetupGyroscope: function () {
-		window.addEventListener("deviceorientation", function(event) { 
+		window.addEventListener("deviceorientationabsolute", function(event) { 
 		
 				var alpha = Math.round(event.alpha*10);
 				var beta = Math.round(event.beta*10);
