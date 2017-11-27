@@ -30,7 +30,7 @@ public class SwipeColor : MonoBehaviour
 			{
 				touchEnd = new Vector2(t.position.x,t.position.y);
 
-				swipeVector = new Vector2(touchEnd.x - touchBegin.x, touchEnd - touchBegin.y);
+				swipeVector = new Vector2(touchEnd.x - touchBegin.x, touchEnd.y - touchBegin.y);
 
 				swipeVector.Normalize();
 
