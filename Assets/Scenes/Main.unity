@@ -403,15 +403,15 @@ Prefab:
     - target: {fileID: 2300032, guid: 6baa0703daf55be4eb2eecef46808e82, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 09f4f6d33b36689448050a172d2cfcdd, type: 2}
+      objectReference: {fileID: 2100000, guid: fffc03dcd96b0e148867dbd3ba2f2d50, type: 2}
     - target: {fileID: 2300034, guid: 6baa0703daf55be4eb2eecef46808e82, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 09f4f6d33b36689448050a172d2cfcdd, type: 2}
+      objectReference: {fileID: 2100000, guid: fffc03dcd96b0e148867dbd3ba2f2d50, type: 2}
     - target: {fileID: 2300028, guid: 6baa0703daf55be4eb2eecef46808e82, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 09f4f6d33b36689448050a172d2cfcdd, type: 2}
+      objectReference: {fileID: 2100000, guid: fffc03dcd96b0e148867dbd3ba2f2d50, type: 2}
     - target: {fileID: 2300098, guid: 6baa0703daf55be4eb2eecef46808e82, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
