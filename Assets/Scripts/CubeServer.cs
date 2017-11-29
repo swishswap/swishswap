@@ -10,6 +10,9 @@ public class CubeServer : MonoBehaviour {
 	private int hostID;
 	private int channelID;
 
+	private Quaternion currentRotation;
+	private Quaternion target;
+
 	// Use this for initialization
 	void Start () {
 
@@ -26,6 +29,9 @@ public class CubeServer : MonoBehaviour {
 		hostID = NetworkTransport.AddWebsocketHost (topology, 1234);
 		//hostID = NetworkTransport.AddHost (topology, 1234);
 		Debug.Log ("Server is open.");
+
+		currentRotation = Quaternion.Euler (0, 0, 0);
+		target = Quaternion.Euler (0, 0, 0);
 
 	}
 
@@ -93,8 +99,12 @@ public class CubeServer : MonoBehaviour {
 					c.calibrate (alpha, beta, gamma);
 				}
 
+				target = c.correct (alpha, beta, gamma);
+
+
+
 				//For a standing phone -beta, -gamma, alpha
-				gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), c.correct(alpha, beta, gamma));
+				gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), currentRotation);
 				//For a horizontal phone gamma, -beta, alpha
 				//gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(buffer[2], -buffer[1], buffer[0])));
 				break;
@@ -105,6 +115,19 @@ public class CubeServer : MonoBehaviour {
 				break;
 			}
 		}
+
+
+		if (!Input.GetKey (KeyCode.Space)) {
+
+			float angle = Quaternion.Angle (currentRotation, target);
+
+			float sensitivity = 0.01f;
+			float v = angle * sensitivity;
+			currentRotation = Quaternion.Slerp (currentRotation, target, v / (v + 1.0f));
+		} else {
+			currentRotation = target;
+		}
+
 
 	}
 
