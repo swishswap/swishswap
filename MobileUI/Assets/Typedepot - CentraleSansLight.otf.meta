@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 6976edc74c99349f1a24899fe784c21e
+timeCreated: 1511223008
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: CentraleSans
+  fontNames:
+  - CentraleSans
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 3a6741204f5264aeebf7892a0b24298e, type: 3}
+  - {fileID: 12800000, guid: 5aa17947ef8b14925bf39d2a8810936d, type: 3}
+  - {fileID: 12800000, guid: 58a362df7cc3743c1b69139423ef8a24, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
