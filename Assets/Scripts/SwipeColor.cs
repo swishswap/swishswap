@@ -3,13 +3,16 @@ using System.Collections;
 
 public class SwipeColor : MonoBehaviour 
 {
+	public Material [] materials = new Material[3];
 	private Renderer rend;
 	Vector2 touchBegin;
 	Vector2 touchEnd;
 	Vector2 swipeVector;
+	int index;
 
 	void Start(){
 		rend = GetComponent<Renderer> ();
+		index = 0;
 	}
 
 	void Update() 
@@ -35,24 +38,33 @@ public class SwipeColor : MonoBehaviour
 				swipeVector.Normalize();
 
 				//Up swipe
-				if(swipeVector.y > 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
+				/*if(swipeVector.y > 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
 				{
-					rend.material.color = Color.blue;
+					rend.material = materials[0];
 				}
 				//Down swipe
 				if(swipeVector.y < 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
 				{
-					rend.material.color = Color.red;
-				}
+					rend.material = materials[1];
+				}*/
+
 				//Left swipe
 				if(swipeVector.x < 0 && swipeVector.y > -0.5f && swipeVector.y < 0.5f)
 				{
-					rend.material.color = Color.yellow;
+					index++;
+					if (index > 2) {
+						index = 0;
+					}
+					rend.material = materials[index];
 				}
 				//Right swipe
 				if(swipeVector.x > 0 && swipeVector.y > -0.5f && swipeVector.y < 0.5f)
 				{
-					rend.material.color = Color.green;
+					index--;
+					if (index < 0) {
+						index = 2;
+					}
+					rend.material = materials[index];
 				}
 			}
 		}
