@@ -5,7 +5,9 @@ using UnityEngine;
 public class CameraScript : MonoBehaviour {
 
 	Animator anim;
+	//parameters
 	int sceneHash = Animator.StringToHash("Scene");
+	//animations
 	int camOneHash = Animator.StringToHash("Base Layer.MainCamera1");
 	int camTwoHash = Animator.StringToHash("Base Layer.MainCamera2");
 	int camFourHash = Animator.StringToHash("Base Layer.MainCamera4");
@@ -22,23 +24,23 @@ public class CameraScript : MonoBehaviour {
 
 		AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo (0);
 
-		//Change to touch
+		//Change to touchinput
 		if(Input.GetKeyDown(KeyCode.Space) && stateInfo.nameHash == camCalHash){
 			anim.SetInteger (sceneHash, 1);
 		}
 
-		//Change to swipe (up)
+		//Change to swipeinput (up)
 		if(Input.GetKeyDown(KeyCode.Space) && stateInfo.nameHash == camOneHash){
 			anim.SetInteger (sceneHash, 2);
 		}
 
-		//Change to tilt
+		//Change to tiltinput
 		if(Input.GetKeyDown(KeyCode.Space) && stateInfo.nameHash == camTwoHash){
 			anim.SetInteger (sceneHash, 3);
 			StartCoroutine(coolToColor());
 		}
 
-		//Change to swipe (left/right)
+		//Change to swipeinput (left/right)
 		if(Input.GetKeyDown(KeyCode.Space) && stateInfo.nameHash == camFourHash){
 			anim.SetInteger (sceneHash, 5);
 		}
