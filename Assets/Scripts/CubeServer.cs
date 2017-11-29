@@ -13,6 +13,14 @@ public class CubeServer : MonoBehaviour {
 	private Quaternion currentRotation;
 	private Quaternion target;
 
+	public Material [] materials;
+	private int materialIndex = 0;
+
+	public GameObject[] leather;
+	private Renderer[] leatherRenderers;
+
+
+
 	// Use this for initialization
 	void Start () {
 
@@ -34,6 +42,10 @@ public class CubeServer : MonoBehaviour {
 		currentRotation = Quaternion.Euler (0, 0, 0);
 		target = Quaternion.Euler (0, 0, 0);
 
+		leatherRenderers = new Renderer[leather.Length];
+		for (int i = 0; i < leather.Length; i++) {
+			leatherRenderers [i] = leather [i].GetComponent<Renderer> ();
+		}
 	}
 
 	float alpha;
@@ -90,14 +102,38 @@ public class CubeServer : MonoBehaviour {
 				}
 
 
-				bool touching = buffer [6] == 1;
+				bool shouldCalibrate = buffer [6] == 1;
+				bool swipeLeft = buffer [7] == 1;
+				bool swipeRight = buffer [7] == 2;
 
-				Debug.Log (alpha + ", " + beta + ", " + gamma + ", touching=" + touching);
+				//Debug.Log (alpha + ", " + beta + ", " + gamma + ", shouldCalibrate=" + shouldCalibrate);
 
 				Client c = getClient (connection);
 
-				if (touching) {
+				if (shouldCalibrate) {
 					c.calibrate (alpha, beta, gamma);
+					Debug.Log ("Calibrating.");
+				}
+
+				if (swipeLeft) {
+					Debug.Log ("left is detected");
+
+					materialIndex--;
+					if (materialIndex < 0) {
+						materialIndex = materials.Length - 1;
+					}
+				}
+
+				if (swipeRight) {
+					Debug.Log ("RIGHT is detected");
+					materialIndex++;
+					if (materialIndex >= materials.Length) {
+						materialIndex = 0;
+					}
+				}
+
+				for (int i = 0; i < leatherRenderers.Length; i++) {
+					leatherRenderers [i].material = materials [materialIndex];
 				}
 
 				target = c.correct (alpha, beta, gamma);
@@ -159,7 +195,7 @@ public class CubeServer : MonoBehaviour {
 
 		public Client(int connectionID) {
 			this.connectionID = connectionID;
-			calibration = Quaternion.Euler(0, 0, 0);
+			calibrate(0, 0, 0);
 		}
 
 		public void calibrate(float rotX, float rotY, float rotZ){

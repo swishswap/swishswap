@@ -875,6 +875,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df51abc8c5050ee46b64b7ea57354f69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  materials:
+  - {fileID: 2100000, guid: 5d0e24caf9417cd4eba09ee91f4c387e, type: 2}
+  - {fileID: 2100000, guid: eb0dad785d2694c42aa8100825ee2d23, type: 2}
+  - {fileID: 2100000, guid: 2adb0c9e191b2354ba2aba7dcc2d8389, type: 2}
+  leather:
+  - {fileID: 563569851}
+  - {fileID: 563569850}
+  - {fileID: 563569854}
 --- !u!1 &1276118819 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100082, guid: 6baa0703daf55be4eb2eecef46808e82, type: 3}

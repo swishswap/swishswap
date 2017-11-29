@@ -17,6 +17,10 @@ public class CubeClient : MonoBehaviour {
 
 	private float alpha, beta, gamma;
 
+	Vector2 touchBegin;
+	Vector2 touchEnd;
+	Vector2 swipeVector;
+
 	[DllImport("__Internal")]
 	private static extern void SetupGyroscope();
 
@@ -77,6 +81,16 @@ public class CubeClient : MonoBehaviour {
 		GUILayout.Label ("Connecting: " + connecting);
 		GUILayout.Label ("Connected: " + connected);
 		GUILayout.Label ("Attempt: " + attempt);
+
+		GUILayout.Label ("Touch Begin: " + touchBegin);
+		GUILayout.Label ("Touch End: " + touchEnd);
+		GUILayout.Label ("Swipe vector: " + swipeVector);
+
+		GUILayout.Label ("Alpha: " + alpha);
+		GUILayout.Label ("Beta: " + beta);
+		GUILayout.Label ("Gamma: " + gamma);
+
+
 	}
 
 	void FixedUpdate () {
@@ -113,7 +127,9 @@ public class CubeClient : MonoBehaviour {
 				buffer [6] = (byte)0;
 			}
 
-			NetworkTransport.Send (hostID, connectionID, channelID, buffer, 7, out error);
+			buffer [7] = (byte)Swipe ();
+
+			NetworkTransport.Send (hostID, connectionID, channelID, buffer, 8, out error);
 		}
 
 		while (true) {
@@ -151,5 +167,48 @@ public class CubeClient : MonoBehaviour {
 		}
 
 
+	}
+
+	public int Swipe()
+	{
+		if(Input.touches.Length > 0)
+		{
+			Touch t = Input.GetTouch(0);
+			if(t.phase == TouchPhase.Began)
+			{
+				touchBegin = new Vector2(t.position.x,t.position.y);
+			}
+			if(t.phase == TouchPhase.Ended)
+			{
+				touchEnd = new Vector2(t.position.x,t.position.y);
+
+				swipeVector = new Vector2(touchEnd.x - touchBegin.x, touchEnd.y - touchBegin.y);
+
+				swipeVector.Normalize();
+
+				//Up swipe
+				/*if(swipeVector.y > 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
+				{
+					rend.material = materials[0];
+				}
+				//Down swipe
+				if(swipeVector.y < 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
+				{
+					rend.material = materials[1];
+				}*/
+
+				//Left swipe
+				if(swipeVector.x < 0 && swipeVector.y > -0.5f && swipeVector.y < 0.5f)
+				{
+					return 1;
+				}
+				//Right swipe
+				if(swipeVector.x > 0 && swipeVector.y > -0.5f && swipeVector.y < 0.5f)
+				{
+					return 2;
+				}
+			}
+		}
+		return 0;
 	}
 }
