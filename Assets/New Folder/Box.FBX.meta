@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 94530b728fa1b49eb9623f0a02f2b0a4
-timeCreated: 1511944771
+guid: 56227bea4be6948eabbc44d5de7688c9
+timeCreated: 1512052751
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -8,45 +8,52 @@ ModelImporter:
     100000: Box001
     100002: Box003
     100004: //RootNode
-    100006: Cover
-    100008: Group001
-    100010: Object001
-    100012: Tube001
-    100014: Tube002
+    100006: Lower_Box
+    100008: Tube001
+    100010: Tube002
     400000: Box001
     400002: Box003
     400004: //RootNode
-    400006: Cover
-    400008: Group001
-    400010: Object001
-    400012: Tube001
-    400014: Tube002
+    400006: Lower_Box
+    400008: Tube001
+    400010: Tube002
     2300000: Box001
     2300002: Box003
-    2300004: Object001
-    2300006: Tube001
-    2300008: Tube002
+    2300004: Tube001
+    2300006: Tube002
     3300000: Box001
     3300002: Box003
-    3300004: Object001
-    3300006: Tube001
-    3300008: Tube002
-    4300000: Box003
-    4300002: Object001
+    3300004: Tube001
+    3300006: Tube002
+    4300000: Tube001
+    4300002: Tube002
     4300004: Box001
-    4300006: Tube002
-    4300008: Tube001
+    4300006: Box003
     6400000: Box001
     6400002: Box003
-    6400004: Object001
-    6400006: Tube001
-    6400008: Tube002
+    6400004: Tube001
+    6400006: Tube002
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: No Name
-    second: {fileID: 2100000, guid: 1151a81c257e3490087079fad2664774, type: 2}
+      name: 04 - Default
+    second: {fileID: 2100000, guid: 11d74a8c99f2e4cf9b8ba091ca743b7f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 05 - Default
+    second: {fileID: 2100000, guid: 3156b89a722a0468eb801bc4b0dede23, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 08 - Default
+    second: {fileID: 2100000, guid: 8252d08a123d44a56a21662dda85df23, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 09 - Default
+    second: {fileID: 2100000, guid: f8140e4d59c2c4aef9e371bad971783f, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
