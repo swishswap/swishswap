@@ -33,6 +33,9 @@ public class CubeClient : MonoBehaviour {
 	[DllImport("__Internal")]
 	private static extern void SetupGyroscope();
 
+	[DllImport("__Internal")]
+	private static extern int ALittlePig ();
+
 	// Use this for initialization
 	void Start () {
 
@@ -55,6 +58,7 @@ public class CubeClient : MonoBehaviour {
 		#if UNITY_WEBGL
 			gameObject.transform.SetPositionAndRotation (new Vector3 (0, 0, 0), Quaternion.Euler (0, 45, 0));
 			SetupGyroscope ();
+			//ALittlePig();
 		#endif
 
 		alpha = 0;
@@ -257,4 +261,5 @@ public class CubeClient : MonoBehaviour {
 		yield return new WaitForSeconds(5);
 		anim.SetInteger (sceneHash, 4);
 	}
+
 }
