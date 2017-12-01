@@ -14,4 +14,9 @@ mergeInto(LibraryManager.library, {
 		}, true);
 	},
 	
+	TheGreatestFunctionEver: function() {
+		var a = actLikeAPig();
+		return a;
+	},
+	
 });
