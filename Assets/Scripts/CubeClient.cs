@@ -21,6 +21,15 @@ public class CubeClient : MonoBehaviour {
 	Vector2 touchEnd;
 	Vector2 swipeVector;
 
+	Animator anim;
+	//parameters
+	int sceneHash = Animator.StringToHash("Scene");
+	//animations
+	int camOneHash = Animator.StringToHash("Base Layer.MainCamera1");
+	int camTwoHash = Animator.StringToHash("Base Layer.MainCamera2");
+	int camFourHash = Animator.StringToHash("Base Layer.MainCamera4");
+	int camCalHash = Animator.StringToHash("Base Layer.MainCameraCal");
+
 	[DllImport("__Internal")]
 	private static extern void SetupGyroscope();
 
@@ -51,6 +60,8 @@ public class CubeClient : MonoBehaviour {
 		alpha = 0;
 		beta = 0;
 		gamma = 0;
+
+		anim = GetComponent<Animator>();
 	}
 	
 	public void setAlpha(int a){
@@ -101,13 +112,43 @@ public class CubeClient : MonoBehaviour {
 
 		if (!connected && !connecting) {
 			byte error;
-			connectionID = NetworkTransport.Connect(hostID, "130.229.161.158", 1234, 0, out error);
+			connectionID = NetworkTransport.Connect(hostID, "130.229.131.44", 1234, 0, out error);
 			connecting = true;
 			attempt++;
 			Debug.Log ("Attempting to connect.");
 		}
 
 		if (connected) {
+
+			int swipeDirection = Swipe ();
+
+			bool shouldCalibrate = false;
+
+			AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo (0);
+
+			//Change to touchinput
+
+			if(Input.touchCount > 0 && stateInfo.nameHash == camCalHash){
+				shouldCalibrate = true;
+				anim.SetInteger (sceneHash, 1);
+			}
+
+			//Change to swipeinput (up)
+			if(swipeDirection == 3 && stateInfo.nameHash == camOneHash){
+				anim.SetInteger (sceneHash, 2);
+			}
+
+			//Change to tiltinput
+			if(swipeDirection == 4 && stateInfo.nameHash == camTwoHash){
+				anim.SetInteger (sceneHash, 3);
+				StartCoroutine(coolToColor());
+			}
+
+			//Change to swipeinput (left/right)
+			if((swipeDirection == 1 || swipeDirection == 2) && stateInfo.nameHash == camFourHash){
+				anim.SetInteger (sceneHash, 5);
+			}
+
 			byte error;
 
 			buffer [0] = (byte)((int)alpha >> 8);
@@ -120,14 +161,13 @@ public class CubeClient : MonoBehaviour {
 			buffer [5] = (byte)gamma;
 
 
-			Touch[] touches = Input.touches;
-			if (touches.Length > 0) {
+			if (shouldCalibrate) {
 				buffer [6] = (byte)1;
 			} else {
 				buffer [6] = (byte)0;
 			}
 
-			buffer [7] = (byte)Swipe ();
+			buffer [7] = (byte)swipeDirection;
 
 			NetworkTransport.Send (hostID, connectionID, channelID, buffer, 8, out error);
 		}
@@ -186,17 +226,6 @@ public class CubeClient : MonoBehaviour {
 
 				swipeVector.Normalize();
 
-				//Up swipe
-				/*if(swipeVector.y > 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
-				{
-					rend.material = materials[0];
-				}
-				//Down swipe
-				if(swipeVector.y < 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
-				{
-					rend.material = materials[1];
-				}*/
-
 				//Left swipe
 				if(swipeVector.x < 0 && swipeVector.y > -0.5f && swipeVector.y < 0.5f)
 				{
@@ -207,8 +236,25 @@ public class CubeClient : MonoBehaviour {
 				{
 					return 2;
 				}
+
+				//Up swipe
+				if(swipeVector.y > 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
+				{
+					return 3;
+				}
+				//Down swipe
+				if(swipeVector.y < 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
+				{
+					return 4;
+				}
 			}
 		}
 		return 0;
+	}
+
+	IEnumerator coolToColor()
+	{
+		yield return new WaitForSeconds(5);
+		anim.SetInteger (sceneHash, 4);
 	}
 }

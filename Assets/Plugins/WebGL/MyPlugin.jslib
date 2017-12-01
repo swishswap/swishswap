@@ -7,9 +7,9 @@ mergeInto(LibraryManager.library, {
 				var beta = Math.round(event.beta*10);
 				var gamma = Math.round(event.gamma*10);
 				
-				SendMessage('Cube', 'setAlpha', alpha);
-				SendMessage('Cube', 'setBeta', beta);
-				SendMessage('Cube', 'setGamma', gamma);
+				SendMessage('Camera', 'setAlpha', alpha);
+				SendMessage('Camera', 'setBeta', beta);
+				SendMessage('Camera', 'setGamma', gamma);
 				
 		}, true);
 	},

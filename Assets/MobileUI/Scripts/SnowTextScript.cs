@@ -22,8 +22,13 @@ public class SnowTextScript : MonoBehaviour {
 		AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo (0);
 
 		//Change to touchinput
-		if(Input.GetKeyDown(KeyCode.Space) && stateInfo.nameHash == snowUpHash){
-			anim.SetBool (downHash, true);
+		//if(Input.GetKeyDown(KeyCode.Space) && stateInfo.nameHash == snowUpHash){
+		//	anim.SetBool (downHash, true);
+		//}
+
+		//when snowDownHash go to IEnumerator snowup
+		if(stateInfo.nameHash == snowUpHash){
+			StartCoroutine(snowDown());
 		}
 
 		//when snowDownHash go to IEnumerator snowup
@@ -37,5 +42,11 @@ public class SnowTextScript : MonoBehaviour {
 	{
 		yield return new WaitForSeconds(10);
 		anim.SetBool (downHash, false);
+	}
+
+	IEnumerator snowDown()
+	{
+		yield return new WaitForSeconds(10);
+		anim.SetBool (downHash, true);
 	}
 }
