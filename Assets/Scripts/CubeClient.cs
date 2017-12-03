@@ -132,7 +132,7 @@ public class CubeClient : MonoBehaviour {
 
 			//Change to touchinput
 
-			if(Input.touchCount > 0 && stateInfo.nameHash == camCalHash){
+			if(swipeDirection == 5 && stateInfo.nameHash == camCalHash){
 				shouldCalibrate = true;
 				anim.SetInteger (sceneHash, 1);
 			}
@@ -226,30 +226,33 @@ public class CubeClient : MonoBehaviour {
 			{
 				touchEnd = new Vector2(t.position.x,t.position.y);
 
-				swipeVector = new Vector2(touchEnd.x - touchBegin.x, touchEnd.y - touchBegin.y);
+				float deltaX = touchEnd.x - touchBegin.x;
+				float deltaY = touchEnd.y - touchBegin.y;
+
+				swipeVector = new Vector2(deltaX, deltaY);
 
 				swipeVector.Normalize();
 
 				//Left swipe
-				if(swipeVector.x < 0 && swipeVector.y > -0.5f && swipeVector.y < 0.5f)
-				{
+				if (deltaX < -10.0f && swipeVector.x < -0.5f && swipeVector.y > -0.5f && swipeVector.y < 0.5f) {
 					return 1;
 				}
 				//Right swipe
-				if(swipeVector.x > 0 && swipeVector.y > -0.5f && swipeVector.y < 0.5f)
-				{
+				else if (deltaX > 10.0f && swipeVector.x > 0.5f && swipeVector.y > -0.5f && swipeVector.y < 0.5f) {
 					return 2;
 				}
 
 				//Up swipe
-				if(swipeVector.y > 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
-				{
+				else if (deltaY < -10.0f && swipeVector.y > 0.5f && swipeVector.x > -0.5f && swipeVector.x < 0.5f) {
 					return 3;
 				}
 				//Down swipe
-				if(swipeVector.y < 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
-				{
+				else if (deltaY > 10.0f && swipeVector.y < -0.5f && swipeVector.x > -0.5f && swipeVector.x < 0.5f) {
 					return 4;
+				} 
+				//Touch without swiping
+				else {
+					return 5;
 				}
 			}
 		}
