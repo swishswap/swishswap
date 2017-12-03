@@ -234,20 +234,20 @@ public class CubeClient : MonoBehaviour {
 				swipeVector.Normalize();
 
 				//Left swipe
-				if (deltaX < -10.0f && swipeVector.x < -0.5f && swipeVector.y > -0.5f && swipeVector.y < 0.5f) {
+				if (deltaX < -100.0f && swipeVector.x < -0.5f && swipeVector.y > -0.5f && swipeVector.y < 0.5f) {
 					return 1;
 				}
 				//Right swipe
-				else if (deltaX > 10.0f && swipeVector.x > 0.5f && swipeVector.y > -0.5f && swipeVector.y < 0.5f) {
+				else if (deltaX > 100.0f && swipeVector.x > 0.5f && swipeVector.y > -0.5f && swipeVector.y < 0.5f) {
 					return 2;
 				}
 
 				//Up swipe
-				else if (deltaY < -10.0f && swipeVector.y > 0.5f && swipeVector.x > -0.5f && swipeVector.x < 0.5f) {
+				else if (deltaY > 100.0f && swipeVector.y > 0.5f && swipeVector.x > -0.5f && swipeVector.x < 0.5f) {
 					return 3;
 				}
 				//Down swipe
-				else if (deltaY > 10.0f && swipeVector.y < -0.5f && swipeVector.x > -0.5f && swipeVector.x < 0.5f) {
+				else if (deltaY < -100.0f && swipeVector.y < -0.5f && swipeVector.x > -0.5f && swipeVector.x < 0.5f) {
 					return 4;
 				} 
 				//Touch without swiping
