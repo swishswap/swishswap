@@ -39,8 +39,8 @@ public class CubeServer : MonoBehaviour {
 		//hostID = NetworkTransport.AddHost (topology, 1234);
 		Debug.Log ("Server is open.");
 
-		currentRotation = Quaternion.Euler (0, 0, 0);
-		target = Quaternion.Euler (0, 0, 0);
+		currentRotation = buildQuaternion (0, 0, 0);
+		target = buildQuaternion(0, 0, 0);
 
 		leatherRenderers = new Renderer[leather.Length];
 		for (int i = 0; i < leather.Length; i++) {
@@ -137,18 +137,12 @@ public class CubeServer : MonoBehaviour {
 				}
 
 				target = c.correct (alpha, beta, gamma);
-
-
-
-				//For a standing phone -beta, -gamma, alpha
-				gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), currentRotation);
-				//For a horizontal phone gamma, -beta, alpha
-				//gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.Euler(new Vector3(buffer[2], -buffer[1], buffer[0])));
 				break;
 
 			case NetworkEventType.DisconnectEvent:
 				Debug.Log ("Client disconnected");
-				clients.Remove (getClient(connection));
+				clients.Remove (getClient (connection));
+				target = buildQuaternion (0, 0, 0);
 				break;
 			}
 		}
@@ -165,7 +159,7 @@ public class CubeServer : MonoBehaviour {
 			currentRotation = target;
 		}
 
-
+		gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), currentRotation);
 	}
 
 
@@ -203,7 +197,7 @@ public class CubeServer : MonoBehaviour {
 		}
 
 		public Quaternion correct(float rotX, float rotY, float rotZ){
-			return calibration * buildQuaternion(rotX, rotY, rotZ);
+			return calibration * buildQuaternion(rotX, rotY, rotZ) * buildQuaternion(45, 180, 0);
 		}
 
 		public int getConnectionID(){

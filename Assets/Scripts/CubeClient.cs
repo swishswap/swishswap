@@ -25,10 +25,10 @@ public class CubeClient : MonoBehaviour {
 	//parameters
 	int sceneHash = Animator.StringToHash("Scene");
 	//animations
+	int camCalHash = Animator.StringToHash("Base Layer.MainCameraCal");
 	int camOneHash = Animator.StringToHash("Base Layer.MainCamera1");
 	int camTwoHash = Animator.StringToHash("Base Layer.MainCamera2");
 	int camFourHash = Animator.StringToHash("Base Layer.MainCamera4");
-	int camCalHash = Animator.StringToHash("Base Layer.MainCameraCal");
 
 	[DllImport("__Internal")]
 	private static extern void SetupGyroscope();
@@ -36,9 +36,23 @@ public class CubeClient : MonoBehaviour {
 	[DllImport("__Internal")]
 	private static extern int ALittlePig ();
 
+	private string rawUrl;
+	private string fixedUrl;
+
 	// Use this for initialization
 	void Start () {
+		rawUrl = Application.absoluteURL;
+		fixedUrl = rawUrl;
 
+		int colonIndex = fixedUrl.LastIndexOf (":");
+		if (colonIndex != -1) {
+			fixedUrl = fixedUrl.Remove (colonIndex);
+		}
+
+		int colonSlashSlashIndex = fixedUrl.IndexOf ("://");
+		if (colonSlashSlashIndex != -1) {
+			fixedUrl = fixedUrl.Substring (colonSlashSlashIndex + 3);
+		}
 
 		NetworkTransport.Init ();
 		NetworkServer.Reset ();
@@ -57,8 +71,8 @@ public class CubeClient : MonoBehaviour {
 
 		#if UNITY_WEBGL
 		gameObject.transform.SetPositionAndRotation (new Vector3 (0, 0, 0), Quaternion.Euler (0, 45, 0));
-		SetupGyroscope ();
-		//ALittlePig();
+		//SetupGyroscope ();
+		ALittlePig();
 		#endif
 
 		alpha = 0;
@@ -105,6 +119,9 @@ public class CubeClient : MonoBehaviour {
 		GUILayout.Label ("Beta: " + beta);
 		GUILayout.Label ("Gamma: " + gamma);
 
+		GUILayout.Label ("Raw URL: " + rawUrl);
+		GUILayout.Label ("Fixed URL: " + fixedUrl);
+
 
 	}
 
@@ -116,7 +133,7 @@ public class CubeClient : MonoBehaviour {
 
 		if (!connected && !connecting) {
 			byte error;
-			connectionID = NetworkTransport.Connect(hostID, "130.229.131.44", 1234, 0, out error);
+			connectionID = NetworkTransport.Connect(hostID, fixedUrl, 1234, 0, out error);
 			connecting = true;
 			attempt++;
 			Debug.Log ("Attempting to connect.");
@@ -130,28 +147,37 @@ public class CubeClient : MonoBehaviour {
 
 			AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo (0);
 
-			//Change to touchinput
 
-			if(Input.touchCount > 0 && stateInfo.nameHash == camCalHash){
-				shouldCalibrate = true;
-				anim.SetInteger (sceneHash, 1);
+			if(stateInfo.nameHash == camCalHash){
+				//Change to touchinput
+				if (swipeDirection == 5) {
+					shouldCalibrate = true;
+					anim.SetInteger (sceneHash, 1);
+				}
+			}else if(stateInfo.nameHash == camOneHash){
+				//Change to swipeinput (up)
+				if (swipeDirection == 3) {
+					anim.SetInteger (sceneHash, 2);
+				}
+			}else if(stateInfo.nameHash == camTwoHash){
+				//Change to tiltinput
+				if (swipeDirection == 4) {
+					anim.SetInteger (sceneHash, 3);
+					StartCoroutine (coolToColor ());
+				}
+			}else if(stateInfo.nameHash == camFourHash){
+				//Change to swipeinput (left/right)
+				if (swipeDirection == 1 || swipeDirection == 2) {
+					anim.SetInteger (sceneHash, 5);
+				}
+			}else{
+				if (swipeDirection == 5) {
+					shouldCalibrate = true;
+					anim.SetInteger (sceneHash, 1);
+				}
 			}
 
-			//Change to swipeinput (up)
-			if(swipeDirection == 3 && stateInfo.nameHash == camOneHash){
-				anim.SetInteger (sceneHash, 2);
-			}
 
-			//Change to tiltinput
-			if(swipeDirection == 4 && stateInfo.nameHash == camTwoHash){
-				anim.SetInteger (sceneHash, 3);
-				StartCoroutine(coolToColor());
-			}
-
-			//Change to swipeinput (left/right)
-			if((swipeDirection == 1 || swipeDirection == 2) && stateInfo.nameHash == camFourHash){
-				anim.SetInteger (sceneHash, 5);
-			}
 
 			byte error;
 
@@ -226,30 +252,33 @@ public class CubeClient : MonoBehaviour {
 			{
 				touchEnd = new Vector2(t.position.x,t.position.y);
 
-				swipeVector = new Vector2(touchEnd.x - touchBegin.x, touchEnd.y - touchBegin.y);
+				float deltaX = touchEnd.x - touchBegin.x;
+				float deltaY = touchEnd.y - touchBegin.y;
+
+				swipeVector = new Vector2(deltaX, deltaY);
 
 				swipeVector.Normalize();
 
 				//Left swipe
-				if(swipeVector.x < 0 && swipeVector.y > -0.5f && swipeVector.y < 0.5f)
-				{
+				if (deltaX < -100.0f && swipeVector.x < -0.5f && swipeVector.y > -0.5f && swipeVector.y < 0.5f) {
 					return 1;
 				}
 				//Right swipe
-				if(swipeVector.x > 0 && swipeVector.y > -0.5f && swipeVector.y < 0.5f)
-				{
+				else if (deltaX > 100.0f && swipeVector.x > 0.5f && swipeVector.y > -0.5f && swipeVector.y < 0.5f) {
 					return 2;
 				}
 
 				//Up swipe
-				if(swipeVector.y > 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
-				{
+				else if (deltaY > 100.0f && swipeVector.y > 0.5f && swipeVector.x > -0.5f && swipeVector.x < 0.5f) {
 					return 3;
 				}
 				//Down swipe
-				if(swipeVector.y < 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
-				{
+				else if (deltaY < -100.0f && swipeVector.y < -0.5f && swipeVector.x > -0.5f && swipeVector.x < 0.5f) {
 					return 4;
+				} 
+				//Touch without swiping
+				else {
+					return 5;
 				}
 			}
 		}
