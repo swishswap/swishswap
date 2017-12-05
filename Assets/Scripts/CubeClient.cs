@@ -56,9 +56,9 @@ public class CubeClient : MonoBehaviour {
 		connected = false;
 
 		#if UNITY_WEBGL
-			gameObject.transform.SetPositionAndRotation (new Vector3 (0, 0, 0), Quaternion.Euler (0, 45, 0));
-			SetupGyroscope ();
-			//ALittlePig();
+		gameObject.transform.SetPositionAndRotation (new Vector3 (0, 0, 0), Quaternion.Euler (0, 45, 0));
+		SetupGyroscope ();
+		//ALittlePig();
 		#endif
 
 		alpha = 0;
@@ -67,7 +67,7 @@ public class CubeClient : MonoBehaviour {
 
 		anim = GetComponent<Animator>();
 	}
-	
+
 	public void setAlpha(int a){
 		alpha = a;
 		if (alpha < 0) {
@@ -132,7 +132,7 @@ public class CubeClient : MonoBehaviour {
 
 			//Change to touchinput
 
-			if(swipeDirection == 5 && stateInfo.nameHash == camCalHash){
+			if(Input.touchCount > 0 && stateInfo.nameHash == camCalHash){
 				shouldCalibrate = true;
 				anim.SetInteger (sceneHash, 1);
 			}
@@ -226,33 +226,30 @@ public class CubeClient : MonoBehaviour {
 			{
 				touchEnd = new Vector2(t.position.x,t.position.y);
 
-				float deltaX = touchEnd.x - touchBegin.x;
-				float deltaY = touchEnd.y - touchBegin.y;
-
-				swipeVector = new Vector2(deltaX, deltaY);
+				swipeVector = new Vector2(touchEnd.x - touchBegin.x, touchEnd.y - touchBegin.y);
 
 				swipeVector.Normalize();
 
 				//Left swipe
-				if (deltaX < -100.0f && swipeVector.x < -0.5f && swipeVector.y > -0.5f && swipeVector.y < 0.5f) {
+				if(swipeVector.x < 0 && swipeVector.y > -0.5f && swipeVector.y < 0.5f)
+				{
 					return 1;
 				}
 				//Right swipe
-				else if (deltaX > 100.0f && swipeVector.x > 0.5f && swipeVector.y > -0.5f && swipeVector.y < 0.5f) {
+				if(swipeVector.x > 0 && swipeVector.y > -0.5f && swipeVector.y < 0.5f)
+				{
 					return 2;
 				}
 
 				//Up swipe
-				else if (deltaY > 100.0f && swipeVector.y > 0.5f && swipeVector.x > -0.5f && swipeVector.x < 0.5f) {
+				if(swipeVector.y > 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
+				{
 					return 3;
 				}
 				//Down swipe
-				else if (deltaY < -100.0f && swipeVector.y < -0.5f && swipeVector.x > -0.5f && swipeVector.x < 0.5f) {
+				if(swipeVector.y < 0 && swipeVector.x > -0.5f && swipeVector.x < 0.5f)
+				{
 					return 4;
-				} 
-				//Touch without swiping
-				else {
-					return 5;
 				}
 			}
 		}
