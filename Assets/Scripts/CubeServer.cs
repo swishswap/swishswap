@@ -18,20 +18,11 @@ public class CubeServer : MonoBehaviour {
 
 	public GameObject[] leather;
 	private Renderer[] leatherRenderers;
-	Animator anim;
-	GameObject box;
-	int intHash = Animator.StringToHash("tInt");
-	int idleHash = Animator.StringToHash("Base Layer.IdleBox");
-	int openHash = Animator.StringToHash("Base Layer.OpenBox");
 
 
 
 	// Use this for initialization
 	void Start () {
-		box = GameObject.Find ("Box");
-		anim = box.GetComponent<Animator>();
-
-
 
 		clients = new List<Client> ();
 
@@ -114,7 +105,6 @@ public class CubeServer : MonoBehaviour {
 				bool shouldCalibrate = buffer [6] == 1;
 				bool swipeLeft = buffer [7] == 1;
 				bool swipeRight = buffer [7] == 2;
-				bool swipeUp = buffer [7] == 3;
 
 				//Debug.Log (alpha + ", " + beta + ", " + gamma + ", shouldCalibrate=" + shouldCalibrate);
 
@@ -140,11 +130,6 @@ public class CubeServer : MonoBehaviour {
 					if (materialIndex >= materials.Length) {
 						materialIndex = 0;
 					}
-				}
-
-				if (swipeUp) {
-					anim.SetInteger (intHash, 1);
-					anim.SetInteger (intHash, 2);
 				}
 
 				for (int i = 0; i < leatherRenderers.Length; i++) {
