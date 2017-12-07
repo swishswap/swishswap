@@ -21,8 +21,7 @@ public class CubeServer : MonoBehaviour {
 	Animator anim;
 	GameObject box;
 	int intHash = Animator.StringToHash("tInt");
-	int idleHash = Animator.StringToHash("Base Layer.IdleBox");
-	int openHash = Animator.StringToHash("Base Layer.OpenBox");
+	int removeHash = Animator.StringToHash("Base Layer.RemoveBox");
 
 
 
@@ -143,21 +142,23 @@ public class CubeServer : MonoBehaviour {
 				}
 
 				if (swipeUp) {
+					Debug.Log ("UP is detected");
 					anim.SetInteger (intHash, 1);
-					anim.SetInteger (intHash, 2);
 				}
 
 				for (int i = 0; i < leatherRenderers.Length; i++) {
 					leatherRenderers [i].material = materials [materialIndex];
 				}
 
-				target = c.correct (alpha, beta, gamma);
+				AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo (0);
+				if (stateInfo.nameHash == removeHash) {
+					target = c.correct (alpha, beta, gamma);
+				}
 				break;
 
 			case NetworkEventType.DisconnectEvent:
 				Debug.Log ("Client disconnected");
 				clients.Remove (getClient (connection));
-				target = buildQuaternion (0, 0, 0);
 				break;
 			}
 		}
@@ -169,9 +170,23 @@ public class CubeServer : MonoBehaviour {
 
 			float sensitivity = 0.01f;
 			float v = angle * sensitivity;
-			currentRotation = Quaternion.Slerp (currentRotation, target, v / (v + 1.0f));
+			currentRotation = Quaternion.Slerp (currentRotation, target, 0.5f * v / (v + 1.0f));
 		} else {
 			currentRotation = target;
+		}
+
+		if (Input.GetKey (KeyCode.K)) {
+			Debug.Log ("Kicking " + clients.Count + " connected clients.");
+			for (int i = 0; i < clients.Count; i++) {
+				byte error;
+				NetworkTransport.Disconnect (hostID, clients[i].getConnectionID(), out error);
+			}
+			clients.Clear ();
+		}
+
+		if (clients.Count == 0) {
+			anim.SetInteger (intHash, 0);
+			target = buildQuaternion (90, 0, 0);
 		}
 
 		gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), currentRotation);
@@ -212,7 +227,7 @@ public class CubeServer : MonoBehaviour {
 		}
 
 		public Quaternion correct(float rotX, float rotY, float rotZ){
-			return calibration * buildQuaternion(rotX, rotY, rotZ) * buildQuaternion(45, 180, 0);
+			return calibration * buildQuaternion(rotX, rotY, rotZ) * buildQuaternion(225, 180, 0);
 		}
 
 		public int getConnectionID(){
