@@ -18,7 +18,7 @@ public class CanvasController : MonoBehaviour {
 	public Camera theCamera;
 
 	// Determines the minimum angle (at which to start sgowing the graphics) from the object of interest to the camera.
-	private float limit = 90f;
+	private float limit = 75f;
 
 	// The highlight graphics.
 	public GameObject highlightGraphics;
@@ -34,7 +34,7 @@ public class CanvasController : MonoBehaviour {
 	void Start () {
 		color = Color.white;
 		color_t = Color.white * new Color32 (16, 16, 16, 0);
-		to = descriptiveText.GetComponent<RectTransform> ().position;
+		to = descriptiveText.GetComponent<RectTransform> ().position - new Vector3 (descriptiveText.GetComponent<RectTransform> ().sizeDelta.x *2.25f, 0f, 0f);
 	}
 	
 	// Update is called once per frame

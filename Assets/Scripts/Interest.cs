@@ -63,7 +63,7 @@ public class Interest : MonoBehaviour {
 		// Get the angle from the interesting object to the camera.
 		//float angle = Quaternion.Angle(this.transform.rotation, thecamera.transform.rotation);
 		float angle = Vector3.Angle(this.transform.forward, thecamera.transform.forward);
-
+		Debug.Log (angle);
 		if(angle > limit) {
 			//Debug.Log("interesting");
 
@@ -74,6 +74,7 @@ public class Interest : MonoBehaviour {
 			float diff = angle - limit;
 			float norm = 1.0f- (diff / (180f - limit));
 			Color lerpedcolor = Color32.Lerp (color, color_t, norm);
+
 
 			_highlight.GetComponent<Image> ().color = lerpedcolor;
 
