@@ -158,6 +158,7 @@ public class CubeClient : MonoBehaviour {
 				//Change to swipeinput (up)
 				if (swipeDirection == 3) {
 					anim.SetInteger (sceneHash, 2);
+
 				}
 			}else if(stateInfo.nameHash == camTwoHash){
 				//Change to tiltinput
